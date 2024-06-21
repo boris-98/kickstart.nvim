@@ -574,8 +574,11 @@ require('lazy').setup({
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
         --
+        -- clangd = {
+        --   cmd = { '/home/pi/llvm-project/build/bin/clangd' },
+        -- },
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
+        tsserver = {},
         --
 
         lua_ls = {
@@ -621,6 +624,12 @@ require('lazy').setup({
             require('lspconfig')[server_name].setup(server)
           end,
         },
+      }
+
+      -- Configure clangd directly with lspconfig
+      require('lspconfig').clangd.setup {
+        cmd = { '/home/pi/llvm-project/bin/clangd', '--query-driver=/usr/bin/gcc' },
+        capabilities = capabilities,
       }
     end,
   },
@@ -835,7 +844,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
